@@ -26,7 +26,7 @@ import java.net.SocketException;
 public class Peticion extends Thread{
 
 	//Longitud de bytes por paquete
-	private int PUERTO =60000;
+	private int puerto =50000;
 	public final static int LONGITUD_MAXIMA=60000;//6KB
 
 
@@ -87,20 +87,21 @@ public class Peticion extends Thread{
 			try 
 			{
 				
+				System.out.print("Establecer conexion  SERVIDOR "+"\n");
 
-				PUERTO=PUERTO+Integer.parseInt(idCliente);
+				this.puerto=this.puerto+Integer.parseInt(idCliente);
 				// Se realiza la conexion TCP
-				System.out.println("Cliente con ID: "+ idCliente+ " En el puerto: "+PUERTO);
 				
-				DatagramSocket serverSocket = new DatagramSocket(PUERTO);
+				DatagramSocket serverSocket = new DatagramSocket(this.puerto);
 				
+				System.out.println("Cliente con ID: "+ idCliente+ " En el puerto: "+this.puerto);
+				System.out.println("DS En el puerto: "+ serverSocket.getPort());
 
 				//Se crear dos buffer para recibir y enviar datos
 				byte[] bufferRecibir = new byte[LONGITUD_MAXIMA];
 				byte[] bufferEnviar  = new byte[LONGITUD_MAXIMA];
 
 
-				System.out.print("Establecer conexion  SERVIDOR "+"\n");
 
 				// recibe info del cliente que se conecta
 				DatagramPacket recvdpkt = new DatagramPacket(bufferRecibir, bufferRecibir.length);
@@ -111,6 +112,7 @@ public class Peticion extends Thread{
 				
 				System.out.println("con ID: "+ clientdata+ " En el puerto: "+portno);
 
+				System.out.println("Puerto"+recvdpkt.getPort());
 
 				System.out.print("Comienza transferencia de Archivo Servidor "+"\n");
 				
@@ -143,6 +145,7 @@ public class Peticion extends Thread{
 							//System.out.println("1 if"+"\n");
 							DatagramPacket sendPacket = new DatagramPacket(bufferEnviar, bufferEnviar.length, IP,portno);
 							serverSocket.send(sendPacket);
+							System.out.println("Puerto"+recvdpkt.getPort());
 							
 //							System.out.println("BUUFER COMIENZO : "+"\n");
 //							for (int i = 0; i < bufferEnviar.length; i++) {System.out.println(bufferEnviar[i]);}
@@ -164,6 +167,7 @@ public class Peticion extends Thread{
 							
 							DatagramPacket sendPacket = new DatagramPacket(newBuffer, newBuffer.length, IP,portno);
 							serverSocket.send(sendPacket); 
+							System.out.println("Puerto"+recvdpkt.getPort());
 						}
 					}
 					else

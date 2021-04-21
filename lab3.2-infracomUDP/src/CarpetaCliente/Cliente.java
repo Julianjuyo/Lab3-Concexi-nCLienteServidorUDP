@@ -28,7 +28,7 @@ import java.net.SocketException;
  */
 public class Cliente {
 
-	private int PUERTO2 =60000;
+	private int puerto2 =50000;
 	public final static int LONGITUD_MAXIMA=60000;//6KB
 
 	//Host del servidor
@@ -171,14 +171,16 @@ public class Cliente {
 
 			try 
 			{
-				PUERTO2=PUERTO2+Integer.parseInt(id);
-				System.out.println("El puerto es:"+PUERTO2);
+				this.puerto2=this.puerto2+Integer.parseInt(id);
+				System.out.println("El puerto es:"+this.puerto2);
 
 				//Se establece la ip de la maquina
 				InetAddress IP = InetAddress.getByName(HOST);
 
 				//Se crea una conexion UDP
 				DatagramSocket clientSocket = new DatagramSocket();
+				
+				System.out.println("DS En el puerto: "+ clientSocket.getPort());
 
 				
 				byte[] bufferEnviar = new byte[LONGITUD_MAXIMA];
@@ -191,7 +193,7 @@ public class Cliente {
 				
 				
 				bufferEnviar = clientData.getBytes();    
-				DatagramPacket sendPacket = new DatagramPacket(bufferEnviar, bufferEnviar.length, IP, PUERTO2);
+				DatagramPacket sendPacket = new DatagramPacket(bufferEnviar, bufferEnviar.length, IP, this.puerto2);
 				clientSocket.send(sendPacket);
 
 				System.out.print("Comienza transferencia de Archivo Cliente"+"\n");
