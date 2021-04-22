@@ -26,17 +26,22 @@ import java.net.SocketException;
  * @author je.oliverosf
  *
  */
-public class Cliente {
+public class Cliente extends Thread  {
 
 	private int puerto2 =50000;
 	public final static int LONGITUD_MAXIMA=60000;//6KB
 
-	//Host del servidor
+	//Host del servidor VMware
 	//private final String HOST = "192.168.97.112";
-	private final String HOST = "localhost";
+	
+	//Host del servidor AWS
+	private final String HOST = "35.169.118.6";
+	
+	//Host del servidor propio
+	//private static final String HOST = "localhost";
 
 	//Puerto del servidor
-	private final int PUERTO =61101;
+	private static final int PUERTO =61101;
 
 	//Id del cliente
 	private String id;
@@ -64,7 +69,7 @@ public class Cliente {
 			System.out.println("El archivo " + file.getName() + " tiene " + bytesCount +" bytes.");
 
 		} catch (Exception e) {
-			System.out.println("Problemas al convertir el archivo a bytes: "+ e.getMessage());
+			//System.out.println("Problemas al convertir el archivo a bytes: "+ e.getMessage());
 		}
 		return byteArray;
 	}
@@ -97,7 +102,7 @@ public class Cliente {
 	} 
 
 
-	public void EmpiezaEjecucion() {
+	public void run() {
 
 		//Meodos para ecribir y leer
 		PrintWriter out = null; 
@@ -116,17 +121,12 @@ public class Cliente {
 			// Leer del servidor 
 			in = new BufferedReader(new InputStreamReader( sc.getInputStream())); 
 
-
-			//			//Se pregunta y envia a el servidor el id del cliente
-			//			System.out.println("Escriba el id del cliente (numero)");
-			//			id = scaner.nextLine();
 			out.println(id);
-
 
 			// ciclo hasta que escriba la palabra Listo
 			boolean listo=true;
 			while(listo) {
-				System.out.println("Indique cuando este listo para la empezar la recepcion del archivo escribiendo: Listo");
+				//System.out.println("Indique cuando este listo para la empezar la recepcion del archivo escribiendo: Listo");
 
 				String ComprbanteDeEnvio= "Listo";//scaner.nextLine();//
 				if(ComprbanteDeEnvio.equals("Listo")) 
@@ -142,29 +142,39 @@ public class Cliente {
 			//recibe el hash
 			String line = in.readLine();
 			String hashRecibido = line;
-			System.out.println("recibo Hash: "+hashRecibido);
+			if(id.equals("1"))
+				System.out.println("recibo Hash: "+hashRecibido);
 
 			//recibe el path
 			line= in.readLine();
 			String path = line;
 			String[] split =  path.split("\\.");
 			String tipoDeArchivo =  split[1]; 
-			System.out.println("recibo path: "+ path);
-			System.out.println("recibido Tipo Archivo: "+tipoDeArchivo);
+			//System.out.println("recibo path: "+ path);
+			//System.out.println("recibido Tipo Archivo: "+tipoDeArchivo);
 
 			//recibe el numero de conexiones
 			line= in.readLine();
 			int numeroDeConexiones = Integer.parseInt(line);
-			System.out.println("recibo numeroDeConexiones: "+ numeroDeConexiones);
+			
+			if(id.equals("1"))
+				System.out.println("recibo numeroDeConexiones: "+ numeroDeConexiones);
 
 			//recibe el tamanoArchvio
 			line= in.readLine();
 			int tamanoArchvio = Integer.parseInt(line);
-			System.out.println("recibo tamanoArchvio: "+ tamanoArchvio);
+			
+			if(id.equals("1"))
+				System.out.println("recibo tamanoArchvio: "+ tamanoArchvio);
 
-
-			String pathNuevoArchvio = "/Users/julianoliveros/Cliente"+id+"-Prueba"+numeroDeConexiones+"."+tipoDeArchivo;
-
+			
+			//RUTA PARA MAC
+			String pathNuevoArchvio = "/Users/julianoliveros/ArchivosRecibidos/Cliente"+id+"-Prueba"+numeroDeConexiones+"."+tipoDeArchivo;
+			
+			
+			
+			
+			//RUTA PARA VMWARE
 			//String pathNuevoArchvio ="/home/infracom/Lab3-infracom/lab3-sockets/ArchivosRecibidos/Cliente"+id+"-Prueba"+numeroDeConexiones+"."+tipoDeArchivo;
 
 
@@ -172,7 +182,7 @@ public class Cliente {
 			try 
 			{
 				this.puerto2=this.puerto2+Integer.parseInt(id);
-				System.out.println("El puerto es:"+this.puerto2);
+				System.out.println("Cliente: "+id+" El puerto es:"+this.puerto2);
 
 				//Se establece la ip de la maquina
 				InetAddress IP = InetAddress.getByName(HOST);
@@ -180,14 +190,14 @@ public class Cliente {
 				//Se crea una conexion UDP
 				DatagramSocket clientSocket = new DatagramSocket();
 				
-				System.out.println("DS En el puerto: "+ clientSocket.getPort());
+				//System.out.println(" Primera Cliente: "+id+" En el puerto: "+ clientSocket.getPort());
 
 				
 				byte[] bufferEnviar = new byte[LONGITUD_MAXIMA];
 				byte[] bufferRecibir = new byte[LONGITUD_MAXIMA];
 
 
-				System.out.print("Establecer conexion CLIENTE "+"\n");
+				//System.out.print("Establecer conexion CLIENTE "+"\n");
 
 				String clientData = id;
 				
@@ -196,7 +206,7 @@ public class Cliente {
 				DatagramPacket sendPacket = new DatagramPacket(bufferEnviar, bufferEnviar.length, IP, this.puerto2);
 				clientSocket.send(sendPacket);
 
-				System.out.print("Comienza transferencia de Archivo Cliente"+"\n");
+				//System.out.print("Comienza transferencia de Archivo Cliente"+"\n");
 
 				//File output = new File("/Users/julianoliveros/documentoCOPIA.pdf");
 				
@@ -206,15 +216,17 @@ public class Cliente {
 				BufferedOutputStream bos = new BufferedOutputStream(fos);
 				int data;
 
-				System.out.print("Entro a while"+"\n");
+				//System.out.print("Cliente: "+id+" Entro a while"+"\n");
 				int a=0;
 				while(true) 
 				{
 					
 					DatagramPacket recvdpkt = new DatagramPacket(bufferRecibir, bufferRecibir.length);
+					//System.out.print("Cliente: "+id+" Paso 1 En: "+a+"\n");
 					clientSocket.receive(recvdpkt);
+					//System.out.print("Cliente: "+id+" Paso 2 En: "+a+"\n");
 					data = recvdpkt.getLength();
-					System.out.println("Puerto"+recvdpkt.getPort());
+					//System.out.println("Cliente: "+id+" Puerto: "+recvdpkt.getPort());
 					
 
 //					String clientdata = new String(recvdpkt.getData());
@@ -250,22 +262,21 @@ public class Cliente {
 							
 							bos.write(newBuffer, 0, data);
 							
-							System.out.println("Se termino de enviar el archivo");
+							//System.out.println("Se termino de enviar el archivo");
 							bos.close();
 							break;
 						}
 					}
 				}
 				
-				System.out.println("el a es"+a);
-				System.out.println("salio cliente");
+				//System.out.println("el a es"+a);
+				//System.out.println("salio cliente");
 				clientSocket.close();
 
-
-				String resp = VerificarHash(hashRecibido, pathNuevoArchvio);
+				String resp = VerificarHash(hashRecibido, pathNuevoArchvio, id);
 
 				long endTime = System.currentTimeMillis() - startTime;
-				System.out.println("Se tardo:"+endTime+" milisegundos");
+				System.out.println("Cliente: "+id+" Se tardo:"+endTime+" milisegundos"+"\n");
 
 
 				sc.close(); 
@@ -286,27 +297,28 @@ public class Cliente {
 	 * @param hashRecibido
 	 * @param pathNuevoArchvio
 	 */
-	public String VerificarHash(String hashRecibido, String pathNuevoArchvio) {
+	public String VerificarHash(String hashRecibido, String pathNuevoArchvio, String id) {
 
 		String resp ="";
 		File fichero = new File(pathNuevoArchvio);
 
-		System.out.println("Tamano Fichero Transferido: "+fichero.length());
-		System.out.println("path Fichero Transferido: "+fichero.getPath());
+		//System.out.println("Tamano Fichero Transferido: "+fichero.length());
+		//System.out.println("path Fichero Transferido: "+fichero.getPath());
 
 		//Se verifica que el hash sea el mismo
 		String hashArchivoNuevo =  getHash(fichero);
-		System.out.println("Hash archivo recibido: "+hashArchivoNuevo);
+		System.out.println("Cliente: "+id+" Hash archivo recibido: "+hashArchivoNuevo);
 
 		if(!hashArchivoNuevo.equals(hashRecibido)) {
-			System.out.println("EL ARHCIVO NO ES CORRECTO!!!!");
+			System.out.println("Cliente: "+id+" EL ARHCIVO NO ES CORRECTO!!!!");
 			resp="Error";
 		}
 		else {
-			System.out.println("\n"+"EL VALOR CALCULADO PARA EL HASH DEL ARHCIVO ES CORRECTO"+"\n");
+			System.out.println("Cliente: "+id+" EL VALOR CALCULADO PARA EL HASH DEL ARHCIVO ES CORRECTO");
 			resp="Correcto";
 		}
-		System.out.println("Envio Respuesta Hash: "+resp);
+		
+		//System.out.println("Envio Respuesta Hash: "+resp);
 
 		return resp;
 
@@ -323,12 +335,18 @@ public class Cliente {
 		Scanner scaner = new Scanner(System.in);
 
 		//Se pregunta y envia a el servidor el id del cliente
-		System.out.println("Escriba el id del cliente (numero)");
-		String ClienteId = scaner.nextLine();
+//		System.out.println("Escriba el id del cliente (numero)");
+		System.out.println("Escriba el numero de clientes");
+		String clienteId =  scaner.nextLine();
 
 
-		Cliente cliente = new Cliente(ClienteId);
-		cliente.EmpiezaEjecucion();;
+		for (int i = 1; i <= Integer.parseInt(clienteId); i++) {
+			
+			String id = String.valueOf(i);
+			Cliente cliente = new Cliente(id);
+			cliente.start();
+		}
+		
 
 
 	}

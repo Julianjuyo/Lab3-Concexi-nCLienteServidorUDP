@@ -112,9 +112,9 @@ public class Peticion extends Thread{
 				
 				System.out.println("con ID: "+ clientdata+ " En el puerto: "+portno);
 
-				System.out.println("Puerto"+recvdpkt.getPort());
+				System.out.println("Cliente: "+idCliente+"Puerto"+recvdpkt.getPort());
 
-				System.out.print("Comienza transferencia de Archivo Servidor "+"\n");
+				//System.out.print("Comienza transferencia de Archivo Servidor "+"\n");
 				
 				
 				//File fichero = new File("/Users/julianoliveros/documento.pdf");
@@ -128,7 +128,7 @@ public class Peticion extends Thread{
 				
 				System.out.println("tamano archivo: "+fichero.length());
 
-				System.out.print("Entro a while"+"\n");
+				System.out.print("Cliente: "+idCliente+" Entro a while"+"\n");
 				
 				//Se comienza a enviar el archvio 
 				int a=0;
@@ -145,7 +145,7 @@ public class Peticion extends Thread{
 							//System.out.println("1 if"+"\n");
 							DatagramPacket sendPacket = new DatagramPacket(bufferEnviar, bufferEnviar.length, IP,portno);
 							serverSocket.send(sendPacket);
-							System.out.println("Puerto"+recvdpkt.getPort());
+							//System.out.println("Cliente: "+idCliente+" Puerto"+recvdpkt.getPort());
 							
 //							System.out.println("BUUFER COMIENZO : "+"\n");
 //							for (int i = 0; i < bufferEnviar.length; i++) {System.out.println(bufferEnviar[i]);}
@@ -167,20 +167,17 @@ public class Peticion extends Thread{
 							
 							DatagramPacket sendPacket = new DatagramPacket(newBuffer, newBuffer.length, IP,portno);
 							serverSocket.send(sendPacket); 
-							System.out.println("Puerto"+recvdpkt.getPort());
+							//System.out.println("Cliente: "+idCliente+"Puerto"+recvdpkt.getPort());
 						}
 					}
 					else
 					{
-						System.out.println("Se termino de enviar el archivo");
+						System.out.println("Cliente: "+idCliente+" Se termino de enviar el archivo");
 						break;
 
 					}
 				}
-				
-				System.out.println("el a es"+a);
-				
-				System.out.println("salio servidor");
+					
 				serverSocket.close();
 		
 
@@ -199,7 +196,6 @@ public class Peticion extends Thread{
 //						this.log.log("La petición del cliente " + idCliente + " se proceso en " + tiempoEjecucion );
 
 
-
 			} 
 			catch (SocketException ex) 
 			{
@@ -210,13 +206,9 @@ public class Peticion extends Thread{
 				//Logger.getLogger(Servidorcopy.class.getName()).log(Level.SEVERE, null, ex);
 			}
 
-
 			clienteSC.close();
-			System.out.println("Cliente desconectado");	
-
-
-
-
+			
+			System.out.println("Cliente: "+idCliente+" salio servidor");
 		} 
 		catch (IOException e) { 
 			e.printStackTrace(); 

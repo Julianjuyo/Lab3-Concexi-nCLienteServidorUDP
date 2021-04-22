@@ -23,13 +23,21 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Servidor {
 
-	//private final static String RUTA1="H:/Desktop/Laboratorio3TCP.pdf";
-
-	//private final static String RUTA1="/home/infracom/Lab3-infracom/Archivos/250MB.zip";
-	private final static String RUTA2="/home/infracom/Lab3-infracom/Archivos/100MB.zip";
-	private final static String RUTA1="/Users/julianoliveros/lab3.pdf";
+	//RUTAS PARA MAC
+	//private final static String RUTA1="/Users/julianoliveros/ArchivosRecibidos/ENVIAR/100MB.zip";
+	//private final static String RUTA2="/Users/julianoliveros/ArchivosRecibidos/ENVIAR/250MB.zip";
+	
+	
+	//RUTAS PARA AWS
+	private final static String RUTA1="/home/ubuntu/1-Lab3-TCP/Lab3-infracom/Archivos/250MB.zip";
+	private final static String RUTA2="/home/ubuntu/1-Lab3-TCP/Lab3-infracom/Archivos/100MB.zip";
+	
+	//RUTAS PARA VMWARE
+	//private final static String RUTA1="/home/infracom/Lab3-infracom/Archivos/100MB.zip";
+	//private final static String RUTA2="/home/infracom/Lab3-infracom/Archivos/250MB.zip";
+	
+	//private final static String RUTA1="/Users/julianoliveros/lab3.pdf";
 	//private final static String RUTA1="/Users/julianoliveros/Public/matricula.pdf";
-	//private final static String RUTA2="/Users/julianoliveros/100MBcopy.zip";
 	private static File fichero;
 	private static CarpetaServidor.Logger logger;
 
@@ -111,7 +119,7 @@ public class Servidor {
 
 				System.out.println("\n"+"Indique el numero de clientes a los que archivo quiere enviar el archivo \n");
 
-				numeroConexiones= 1;//Integer.parseInt(scaner.nextLine());
+				numeroConexiones= Integer.parseInt(scaner.nextLine());
 
 				System.out.println(
 						"Indique que archivo quiere enviar (ESCRIBA EL NUMERO 1,2,3) \n"+
@@ -120,7 +128,7 @@ public class Servidor {
 								"3: Otro (pasar ruta por parametro) \n"
 						);
 
-				String Archivo ="1"; // scaner.nextLine();
+				String Archivo = scaner.nextLine();
 
 				//Transferir archivo de 100MB
 				if(Archivo.equals("1")) {
