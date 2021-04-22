@@ -29,8 +29,8 @@ public class Servidor {
 	
 	
 	//RUTAS PARA AWS
-	private final static String RUTA1="/home/ubuntu/1-Lab3-TCP/Lab3-infracom/Archivos/250MB.zip";
-	private final static String RUTA2="/home/ubuntu/1-Lab3-TCP/Lab3-infracom/Archivos/100MB.zip";
+	private final static String RUTA1="/home/ubuntu/2-Lab3-UDP/Lab3-ConcexionCLienteServidorUDP/lab3.2-infracomUDP/Archivos/250MB.zip";
+	private final static String RUTA2="/home/ubuntu/2-Lab3-UDP/Lab3-ConcexionCLienteServidorUDP/lab3.2-infracomUDP/Archivos/100MB.zip";
 	
 	//RUTAS PARA VMWARE
 	//private final static String RUTA1="/home/infracom/Lab3-infracom/Archivos/100MB.zip";
