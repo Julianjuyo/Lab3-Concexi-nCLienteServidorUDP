@@ -29,22 +29,25 @@ import java.net.SocketException;
 public class Cliente extends Thread  {
 
 	private int puerto2 =50000;
+	
 	public final static int LONGITUD_MAXIMA=60000;//6KB
 
 	//Host del servidor VMware
 	//private final String HOST = "192.168.97.112";
 	
 	//Host del servidor AWS
-	private final String HOST = "35.169.118.6";
+	//private final String HOST = "35.169.118.6";
 	
 	//Host del servidor propio
-	//private static final String HOST = "localhost";
+	private static final String HOST = "localhost";
 
 	//Puerto del servidor
 	private static final int PUERTO =61101;
 
 	//Id del cliente
 	private String id;
+	
+	private static CarpetaServidor.Logger logger;
 
 	
 	public Cliente(String pId) {
@@ -149,9 +152,15 @@ public class Cliente extends Thread  {
 			line= in.readLine();
 			String path = line;
 			String[] split =  path.split("\\.");
-			String tipoDeArchivo =  split[1]; 
-			//System.out.println("recibo path: "+ path);
-			//System.out.println("recibido Tipo Archivo: "+tipoDeArchivo);
+			
+			String tipoDeArchivo;
+			
+			if(HOST.equalsIgnoreCase("localhost"))
+				tipoDeArchivo = split[1];
+			else
+				tipoDeArchivo = split[2];
+			System.out.println("recibo path: "+ path);
+			System.out.println("recibido Tipo Archivo: "+tipoDeArchivo);
 
 			//recibe el numero de conexiones
 			line= in.readLine();
@@ -171,7 +180,7 @@ public class Cliente extends Thread  {
 			//RUTA PARA MAC
 			String pathNuevoArchvio = "/Users/julianoliveros/ArchivosRecibidos/Cliente"+id+"-Prueba"+numeroDeConexiones+"."+tipoDeArchivo;
 			
-			
+			//System.out.println(pathNuevoArchvio);
 			
 			
 			//RUTA PARA VMWARE
@@ -224,6 +233,7 @@ public class Cliente extends Thread  {
 					DatagramPacket recvdpkt = new DatagramPacket(bufferRecibir, bufferRecibir.length);
 					//System.out.print("Cliente: "+id+" Paso 1 En: "+a+"\n");
 					clientSocket.receive(recvdpkt);
+
 					//System.out.print("Cliente: "+id+" Paso 2 En: "+a+"\n");
 					data = recvdpkt.getLength();
 					//System.out.println("Cliente: "+id+" Puerto: "+recvdpkt.getPort());
@@ -244,7 +254,7 @@ public class Cliente extends Thread  {
 //							for (int i = 0; i < bufferRecibir.length; i++) {System.out.println(bufferRecibir[i]);}
 //							System.out.println("BUUFER FINAL : "+"\n");
 //							
-//							System.out.println("1 if "+"\n");
+							//System.out.println("1 if "+"\n");
 							bos.write(bufferRecibir, 0, LONGITUD_MAXIMA);
 						}
 						else {

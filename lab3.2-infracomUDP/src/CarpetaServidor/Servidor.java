@@ -24,13 +24,13 @@ import java.security.NoSuchAlgorithmException;
 public class Servidor {
 
 	//RUTAS PARA MAC
-	//private final static String RUTA1="/Users/julianoliveros/ArchivosRecibidos/ENVIAR/100MB.zip";
-	//private final static String RUTA2="/Users/julianoliveros/ArchivosRecibidos/ENVIAR/250MB.zip";
+	private final static String RUTA1="/Users/julianoliveros/ArchivosRecibidos/ENVIAR/100MB.zip";
+	private final static String RUTA2="/Users/julianoliveros/ArchivosRecibidos/ENVIAR/250MB.zip";
 	
 	
 	//RUTAS PARA AWS
-	private final static String RUTA1="/home/ubuntu/2-Lab3-UDP/Lab3-ConcexionCLienteServidorUDP/lab3.2-infracomUDP/Archivos/250MB.zip";
-	private final static String RUTA2="/home/ubuntu/2-Lab3-UDP/Lab3-ConcexionCLienteServidorUDP/lab3.2-infracomUDP/Archivos/100MB.zip";
+	//private final static String RUTA1="/home/ubuntu/2-Lab3-UDP/Lab3-ConcexionCLienteServidorUDP/lab3.2-infracomUDP/Archivos/250MB.zip";
+	//private final static String RUTA2="/home/ubuntu/2-Lab3-UDP/Lab3-ConcexionCLienteServidorUDP/lab3.2-infracomUDP/Archivos/100MB.zip";
 	
 	//RUTAS PARA VMWARE
 	//private final static String RUTA1="/home/infracom/Lab3-infracom/Archivos/100MB.zip";

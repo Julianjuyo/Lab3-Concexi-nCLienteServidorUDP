@@ -87,15 +87,15 @@ public class Peticion extends Thread{
 			try 
 			{
 				
-				System.out.print("Establecer conexion  SERVIDOR "+"\n");
+				//System.out.print("Establecer conexion  SERVIDOR "+"\n");
 
 				this.puerto=this.puerto+Integer.parseInt(idCliente);
 				// Se realiza la conexion TCP
 				
 				DatagramSocket serverSocket = new DatagramSocket(this.puerto);
 				
-				System.out.println("Cliente con ID: "+ idCliente+ " En el puerto: "+this.puerto);
-				System.out.println("DS En el puerto: "+ serverSocket.getPort());
+				System.out.println("Server socket con ID: "+ idCliente+ " En el puerto: "+this.puerto);
+				//System.out.println("DS En el puerto: "+ serverSocket.getPort());
 
 				//Se crear dos buffer para recibir y enviar datos
 				byte[] bufferRecibir = new byte[LONGITUD_MAXIMA];
@@ -110,9 +110,10 @@ public class Peticion extends Thread{
 				int portno = recvdpkt.getPort();
 				String clientdata = new String(recvdpkt.getData());
 				
-				System.out.println("con ID: "+ clientdata+ " En el puerto: "+portno);
+				
+				//System.out.println("Data con ID: "+ clientdata+ " En el puerto: "+portno);
 
-				System.out.println("Cliente: "+idCliente+"Puerto"+recvdpkt.getPort());
+				//System.out.println("Cliente: "+idCliente+"Puerto"+recvdpkt.getPort());
 
 				//System.out.print("Comienza transferencia de Archivo Servidor "+"\n");
 				
@@ -126,9 +127,9 @@ public class Peticion extends Thread{
 				BufferedInputStream bis = new BufferedInputStream(fis);
 				int data;
 				
-				System.out.println("tamano archivo: "+fichero.length());
+				//System.out.println("tamano archivo: "+fichero.length());
 
-				System.out.print("Cliente: "+idCliente+" Entro a while"+"\n");
+				//System.out.print("Cliente: "+idCliente+" Entro a while"+"\n");
 				
 				//Se comienza a enviar el archvio 
 				int a=0;
@@ -143,8 +144,10 @@ public class Peticion extends Thread{
 					{
 						if(data==LONGITUD_MAXIMA) {
 							//System.out.println("1 if"+"\n");
-							DatagramPacket sendPacket = new DatagramPacket(bufferEnviar, bufferEnviar.length, IP,portno);
+							DatagramPacket sendPacket = new DatagramPacket(bufferEnviar, bufferEnviar.length, IP,this.puerto);
+							//System.out.print("Cliente: "+idCliente+" Paso 1 En: "+a+"\n");
 							serverSocket.send(sendPacket);
+							//System.out.print("Cliente: "+idCliente+" Paso 2 En: "+a+"\n");
 							//System.out.println("Cliente: "+idCliente+" Puerto"+recvdpkt.getPort());
 							
 //							System.out.println("BUUFER COMIENZO : "+"\n");
@@ -172,7 +175,7 @@ public class Peticion extends Thread{
 					}
 					else
 					{
-						System.out.println("Cliente: "+idCliente+" Se termino de enviar el archivo");
+						//System.out.println("Cliente: "+idCliente+" Se termino de enviar el archivo");
 						break;
 
 					}
