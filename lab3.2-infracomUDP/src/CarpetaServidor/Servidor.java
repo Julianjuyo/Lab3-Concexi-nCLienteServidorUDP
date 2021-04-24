@@ -21,15 +21,23 @@ import java.security.NoSuchAlgorithmException;
  * @author julianoliveros
  *
  */
-public class Servidorcopy {
+public class Servidor {
 
-	//private final static String RUTA1="H:/Desktop/Laboratorio3TCP.pdf";
-
-	private final static String RUTA1="/home/infracom/Lab3-infracom/Archivos/250MB.zip";
-	private final static String RUTA2="/home/infracom/Lab3-infracom/Archivos/100MB.zip";
-	//private final static String RUTA1="/Users/julianoliveros/Public/hola.txt";
+	//RUTAS PARA MAC
+	//private final static String RUTA1="/Users/julianoliveros/ArchivosRecibidos/ENVIAR/100MB.zip";
+	//private final static String RUTA2="/Users/julianoliveros/ArchivosRecibidos/ENVIAR/250MB.zip";
+	
+	
+	//RUTAS PARA AWS
+	private final static String RUTA1="/home/ubuntu/2-Lab3-UDP/Lab3-ConcexionCLienteServidorUDP/lab3.2-infracomUDP/Archivos/250MB.zip";
+	private final static String RUTA2="/home/ubuntu/2-Lab3-UDP/Lab3-ConcexionCLienteServidorUDP/lab3.2-infracomUDP/Archivos/100MB.zip";
+	
+	//RUTAS PARA VMWARE
+	//private final static String RUTA1="/home/infracom/Lab3-infracom/Archivos/100MB.zip";
+	//private final static String RUTA2="/home/infracom/Lab3-infracom/Archivos/250MB.zip";
+	
+	//private final static String RUTA1="/Users/julianoliveros/lab3.pdf";
 	//private final static String RUTA1="/Users/julianoliveros/Public/matricula.pdf";
-	//private final static String RUTA2="/Users/julianoliveros/100MBcopy.zip";
 	private static File fichero;
 	private static CarpetaServidor.Logger logger;
 
@@ -94,6 +102,7 @@ public class Servidorcopy {
 	public static void main(String[] args) {
 
 		ServerSocket servidor = null;
+		
 		final int PUERTO =61101;
 		String ruta=" ";
 		int numeroConexiones=0;
@@ -175,16 +184,14 @@ public class Servidorcopy {
 			int tamanoArchivo= (int) fichero.length();
 			System.out.println("tam"+tamanoArchivo);
 			
-			int division= tamanoArchivo/19;
-			System.out.println(division);
-			
-
+//			int division= tamanoArchivo/19;
+//			System.out.println(division);
 
 			//alamceno info de cada socket			
 			ArrayList<Peticion> Clientes = new ArrayList<>();
 			
 			int estado=0;
-			logger = new CarpetaServidor.Logger(numeroConexiones, fichero.getName(), fichero.length());
+			//logger = new CarpetaServidor.Logger(numeroConexiones, fichero.getName(), fichero.length());
 
 
 			//While que se queda esperando a que lleguen clientes.
@@ -221,7 +228,7 @@ public class Servidorcopy {
 		}
 		catch (IOException ex)
 		{
-			Logger.getLogger(Servidorcopy.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			if(servidor!=null) {
 				try {
